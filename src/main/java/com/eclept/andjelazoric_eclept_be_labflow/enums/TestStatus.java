@@ -1,4 +1,4 @@
-package com.eclept.andjelazoric_eclept_be_labflow.entity;
+package com.eclept.andjelazoric_eclept_be_labflow.enums;
 
 
 public enum TestStatus {

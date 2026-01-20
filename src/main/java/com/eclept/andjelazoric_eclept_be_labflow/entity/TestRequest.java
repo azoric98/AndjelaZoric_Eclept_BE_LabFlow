@@ -1,5 +1,6 @@
 package com.eclept.andjelazoric_eclept_be_labflow.entity;
 
+import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

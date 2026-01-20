@@ -3,7 +3,7 @@ package com.eclept.andjelazoric_eclept_be_labflow.service;
 import com.eclept.andjelazoric_eclept_be_labflow.config.RabbitMQConfig;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
-import com.eclept.andjelazoric_eclept_be_labflow.entity.TestStatus;
+import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
@@ -24,16 +24,18 @@ public class TestProcessingService {
     private final TechnicianRepository technicianRepository;
     private final TestTypeRepository testTypeRepository;
     private final TestRequestRepository testRequestRepository;
+    private final TestRequestProducer producer;
     private final Logger logger = LoggerFactory.getLogger(TestProcessingService.class);
 
 
     @Value(value = "${labflow.reagentReplacementTimeMinutes}")
     private int reagentReplacementTimeMinutes;
 
-    public TestProcessingService(TechnicianRepository technicianRepository, TestTypeRepository testTypeRepository, TestRequestRepository testRequestRepository) {
+    public TestProcessingService(TechnicianRepository technicianRepository, TestTypeRepository testTypeRepository, TestRequestRepository testRequestRepository, TestRequestProducer producer) {
         this.technicianRepository = technicianRepository;
         this.testTypeRepository = testTypeRepository;
         this.testRequestRepository = testRequestRepository;
+        this.producer = producer;
     }
 
     @RabbitListener(queues = RabbitMQConfig.TEST_QUEUE, concurrency = "5")
@@ -46,28 +48,25 @@ public class TestProcessingService {
         }
         TestRequest testRequest = optionalRequest.get();
 
-        // Check if TestType exists
-        Optional<TestType> optionalTestType = testTypeRepository.findById(testRequest.getTestTypeId());
-        if (optionalTestType.isEmpty()) {
-            logger.warn(" Test type does not exist for test request ID: {}", testRequestId);
+        if (testRequest.getStatus() != TestStatus.RECEIVED) {
+            logger.info("Test ID {} is already processed or in progress", testRequestId);
             return;
         }
+        // Check if TestType exists
+       Optional<TestType> optionalTestType = testTypeRepository.findById(testRequest.getTestTypeId());
         TestType testType = optionalTestType.get();
         // Checking if there is a technician available
-        Optional<Technician> optionalTech = technicianRepository.findFirstByAvailableTrue();
-        if (optionalTech.isEmpty()) {
-            logger.info(" There are no available technicians for the test ID: {}", testRequestId);
+        Optional<Technician> technician = technicianRepository.findById(testRequest.getAssignedTechnicianId());
+        if (technician.isEmpty()) {
+            logger.info("No available technician for test ID {}, keeping it in queue", testRequestId);
             return;
         }
 
-        Technician tech = optionalTech.get();
+        Technician tech = technician.get();
 
         try {
-            // The technician is busy.
-            tech.setAvailable(false);
             technicianRepository.save(tech);
 
-            testRequest.setAssignedTechnicianId(tech.getId());
             testRequest.setStatus(TestStatus.PROCESSING);
             testRequestRepository.save(testRequest);
 
@@ -89,17 +88,23 @@ public class TestProcessingService {
             testRequest.setStatus(TestStatus.COMPLETED);
             testRequest.setCompletedAt(LocalDateTime.now());
             testRequestRepository.save(testRequest);
-
-            tech.setAvailable(true);
-            technicianRepository.save(tech);
             logger.info("Test ID {} was processed successfully", testRequestId);
-
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             logger.error("Processing of test ID {} was aborted", testRequestId, e);
         } catch (Exception e) {
             logger.error(" Error processing test ID {}: {}", testRequestId, e.getMessage(), e);
+        } finally {
+
+            tech.setAvailable(true);
+            technicianRepository.save(tech);
+
+            testRequestRepository
+                    .findFirstByStatusOrderByReceivedAt(TestStatus.RECEIVED)
+                    .ifPresent(next ->
+                            producer.sendTest(next.getId())
+                    );
         }
     }
 }
