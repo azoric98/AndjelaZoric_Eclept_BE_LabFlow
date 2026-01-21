@@ -4,6 +4,7 @@ import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
+import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import com.eclept.andjelazoric_eclept_be_labflow.exception.LabFlowException;
 import com.eclept.andjelazoric_eclept_be_labflow.exception.QueueFullException;
@@ -34,9 +35,9 @@ public class TestRequestService {
 
     public void submitTest(TestRequestDTO dto) {
         TestRequest request = mapToEntity(dto);
-        testTypeRepository.findById(request.getTestTypeId())
-                .orElseThrow(() -> new LabFlowException("Test type not found"));
-
+        if (!testTypeRepository.existsById(dto.getTestTypeId())) {
+            throw new LabFlowException("Test type not found");
+        }
         // hospital rules / walk-in
         if (!request.isWalkIn()) {
             int availableTech = technicianRepository.countAllByAvailable(true);
@@ -52,7 +53,7 @@ public class TestRequestService {
         Optional<Technician> optionalTechnician = technicianRepository.findFirstByAvailableTrue();
         if (optionalTechnician.isPresent()) {
             Technician technician = optionalTechnician.get();
-            request.setAssignedTechnicianId(technician.getId());
+            request.setAssignedTechnician(technician);
             technician.setAvailable(false);
             technicianRepository.save(technician);
         }
@@ -64,7 +65,9 @@ public class TestRequestService {
 
     private TestRequest mapToEntity(TestRequestDTO dto) {
         TestRequest request = new TestRequest();
-        request.setTestTypeId(dto.getTestTypeId());
+        TestType testType =
+                testTypeRepository.getReferenceById(dto.getTestTypeId());
+        request.setTestType(testType);
         request.setWalkIn(dto.isWalkIn());
         request.setStatus(TestStatus.RECEIVED);
         request.setReceivedAt(LocalDateTime.now());
@@ -80,7 +83,12 @@ public class TestRequestService {
         dto.setStatus(request.getStatus());
         dto.setReceivedAt(request.getReceivedAt());
         dto.setCompletedAt(request.getCompletedAt());
-
+        dto.setTestName(request.getTestType().getName());
+        dto.setTechnicianName(
+                request.getAssignedTechnician() != null
+                        ? request.getAssignedTechnician().getName()
+                        : "Not assigned yet"
+        );
         return dto;
     }
 }

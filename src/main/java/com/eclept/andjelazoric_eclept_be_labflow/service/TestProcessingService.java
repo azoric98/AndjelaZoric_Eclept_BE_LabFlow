@@ -22,7 +22,6 @@ import java.util.Optional;
 public class TestProcessingService {
 
     private final TechnicianRepository technicianRepository;
-    private final TestTypeRepository testTypeRepository;
     private final TestRequestRepository testRequestRepository;
     private final TestRequestProducer producer;
     private final Logger logger = LoggerFactory.getLogger(TestProcessingService.class);
@@ -31,9 +30,8 @@ public class TestProcessingService {
     @Value(value = "${labflow.reagentReplacementTimeMinutes}")
     private int reagentReplacementTimeMinutes;
 
-    public TestProcessingService(TechnicianRepository technicianRepository, TestTypeRepository testTypeRepository, TestRequestRepository testRequestRepository, TestRequestProducer producer) {
+    public TestProcessingService(TechnicianRepository technicianRepository, TestRequestRepository testRequestRepository, TestRequestProducer producer) {
         this.technicianRepository = technicianRepository;
-        this.testTypeRepository = testTypeRepository;
         this.testRequestRepository = testRequestRepository;
         this.producer = producer;
     }
@@ -53,20 +51,16 @@ public class TestProcessingService {
             return;
         }
         // Check if TestType exists
-       Optional<TestType> optionalTestType = testTypeRepository.findById(testRequest.getTestTypeId());
-        TestType testType = optionalTestType.get();
+        TestType testType = testRequest.getTestType();
         // Checking if there is a technician available
-        Optional<Technician> technician = technicianRepository.findById(testRequest.getAssignedTechnicianId());
-        if (technician.isEmpty()) {
+        Technician tech = testRequest.getAssignedTechnician();
+
+        if (tech == null) {
             logger.info("No available technician for test ID {}, keeping it in queue", testRequestId);
             return;
         }
 
-        Technician tech = technician.get();
-
         try {
-            technicianRepository.save(tech);
-
             testRequest.setStatus(TestStatus.PROCESSING);
             testRequestRepository.save(testRequest);
 
@@ -99,7 +93,6 @@ public class TestProcessingService {
 
             tech.setAvailable(true);
             technicianRepository.save(tech);
-
             testRequestRepository
                     .findFirstByStatusOrderByReceivedAt(TestStatus.RECEIVED)
                     .ifPresent(next ->

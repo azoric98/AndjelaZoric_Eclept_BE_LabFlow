@@ -17,8 +17,12 @@ public class TestRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long testTypeId;
-    private Long assignedTechnicianId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "test_type_id", nullable = false)
+    private TestType testType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_technician_id")
+    private Technician assignedTechnician;
     @Enumerated(EnumType.STRING)
     // RECEIVED, PROCESSING, COMPLETED, REJECTED
     private TestStatus status;
