@@ -2,7 +2,6 @@ package com.eclept.andjelazoric_eclept_be_labflow.service;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestStatusDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TestRequestService {
@@ -49,13 +47,6 @@ public class TestRequestService {
             if (availableTech < 1 && activeOrWaiting>= 20) {
                 throw new QueueFullException("The hospital queue is full.");
             }
-        }
-        Optional<Technician> optionalTechnician = technicianRepository.findFirstByAvailableTrue();
-        if (optionalTechnician.isPresent()) {
-            Technician technician = optionalTechnician.get();
-            request.setAssignedTechnician(technician);
-            technician.setAvailable(false);
-            technicianRepository.save(technician);
         }
 
         request.setStatus(TestStatus.RECEIVED);

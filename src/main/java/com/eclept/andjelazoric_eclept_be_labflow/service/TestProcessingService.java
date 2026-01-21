@@ -7,13 +7,11 @@ import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
-import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -37,7 +35,6 @@ public class TestProcessingService {
     }
 
     @RabbitListener(queues = RabbitMQConfig.TEST_QUEUE, concurrency = "5")
-    @Transactional
     public void processTest(Long testRequestId) {
         Optional<TestRequest> optionalRequest = testRequestRepository.findById(testRequestId);
         if (optionalRequest.isEmpty()) {
@@ -45,6 +42,7 @@ public class TestProcessingService {
             return;
         }
         TestRequest testRequest = optionalRequest.get();
+        // todo: provjera da li je tip ok
 
         if (testRequest.getStatus() != TestStatus.RECEIVED) {
             logger.info("Test ID {} is already processed or in progress", testRequestId);
@@ -53,12 +51,15 @@ public class TestProcessingService {
         // Check if TestType exists
         TestType testType = testRequest.getTestType();
         // Checking if there is a technician available
-        Technician tech = testRequest.getAssignedTechnician();
-
-        if (tech == null) {
-            logger.info("No available technician for test ID {}, keeping it in queue", testRequestId);
+        Optional<Technician> optionalTechnician = technicianRepository.findFirstByAvailableTrue();
+        if (optionalTechnician.isEmpty()) {
+            logger.info("\nNo available technician for test ID {}, keeping it in queue", testRequestId);
             return;
         }
+        Technician tech = optionalTechnician.get();
+        testRequest.setAssignedTechnician(tech);
+        tech.setAvailable(false);
+        technicianRepository.saveAndFlush(tech);
 
         try {
             testRequest.setStatus(TestStatus.PROCESSING);
@@ -66,11 +67,21 @@ public class TestProcessingService {
 
             // Reagent check
             if (tech.getAvailableReagents() < testType.getReagentUnits()) {
+                logger.info("""
+                                \n{} does not have enough reagents\s
+                                Number of available: \
+                                {}
+                                Number of reagent units: {}""",
+                        tech.getName(), tech.getAvailableReagents(), testType.getReagentUnits());
                 tech.setReplacingReagents(true);
-                technicianRepository.save(tech);
+                technicianRepository.saveAndFlush(tech);
+                logger.info("\n{} is replacing reagents, time: {}", tech.getName(), LocalDateTime.now());
+
                 Thread.sleep(reagentReplacementTimeMinutes * 60 * 1000L);
                 tech.setAvailableReagents(500);
                 tech.setReplacingReagents(false);
+
+                logger.info("\n{} finished replacing reagents, time: {}", tech.getName(), LocalDateTime.now());
             }
 
             tech.setAvailableReagents(tech.getAvailableReagents() - testType.getReagentUnits());

@@ -17,10 +17,10 @@ public class TestRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "test_type_id", nullable = false)
     private TestType testType;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "assigned_technician_id")
     private Technician assignedTechnician;
     @Enumerated(EnumType.STRING)
