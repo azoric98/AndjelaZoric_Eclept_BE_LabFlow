@@ -1,7 +1,7 @@
 package com.eclept.andjelazoric_eclept_be_labflow.mapper;
 
-import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestResponseDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestRequestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;

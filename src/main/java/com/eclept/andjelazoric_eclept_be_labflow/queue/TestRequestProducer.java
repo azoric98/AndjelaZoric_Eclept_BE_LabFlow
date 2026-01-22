@@ -1,4 +1,4 @@
-package com.eclept.andjelazoric_eclept_be_labflow.service;
+package com.eclept.andjelazoric_eclept_be_labflow.queue;
 
 
 import com.eclept.andjelazoric_eclept_be_labflow.config.RabbitMQConfig;

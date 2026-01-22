@@ -1,4 +1,4 @@
-package com.eclept.andjelazoric_eclept_be_labflow.dto;
+package com.eclept.andjelazoric_eclept_be_labflow.dto.response;
 
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import lombok.AllArgsConstructor;

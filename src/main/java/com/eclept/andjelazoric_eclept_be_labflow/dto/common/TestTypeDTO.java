@@ -1,4 +1,4 @@
-package com.eclept.andjelazoric_eclept_be_labflow.dto;
+package com.eclept.andjelazoric_eclept_be_labflow.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.eclept.andjelazoric_eclept_be_labflow.mapper;
 
-import com.eclept.andjelazoric_eclept_be_labflow.dto.TestStatusDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import org.springframework.stereotype.Component;
 

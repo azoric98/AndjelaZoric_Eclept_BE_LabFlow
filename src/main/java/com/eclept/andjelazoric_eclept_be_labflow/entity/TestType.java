@@ -1,13 +1,13 @@
 package com.eclept.andjelazoric_eclept_be_labflow.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,4 +21,16 @@ public class TestType {
     private String name;
     private int processingTimeSeconds;
     private int reagentUnits;
+    @OneToMany(
+            mappedBy = "testType",
+            fetch = FetchType.LAZY
+    )
+    private List<TestRequest> testRequests = new ArrayList<>();
+    public TestType(Long id, String name, int processingTimeSeconds, int reagentUnits) {
+        this.id = id;
+        this.name = name;
+        this.processingTimeSeconds = processingTimeSeconds;
+        this.reagentUnits = reagentUnits;
+    }
+
 }
