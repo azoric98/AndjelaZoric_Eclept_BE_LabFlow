@@ -1,4 +1,5 @@
-package com.eclept.andjelazoric_eclept_be_labflow.security;
+package com.eclept.andjelazoric_eclept_be_labflow.interceptors;
+import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;

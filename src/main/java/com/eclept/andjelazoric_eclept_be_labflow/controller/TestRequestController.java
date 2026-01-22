@@ -1,13 +1,20 @@
 package com.eclept.andjelazoric_eclept_be_labflow.controller;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.TestRequestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestStatusDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tests")
+@Tag(name = "Test Requests", description = "Operations on test requests")
 public class TestRequestController {
 
     private final TestRequestService testRequestService;
@@ -18,12 +25,20 @@ public class TestRequestController {
     }
 
     @PostMapping
+    @Operation(summary = "Submit a new test request", description = "Creates a new test request for a patient or hospital")
     public ResponseEntity<String> submitTest(@RequestBody TestRequestDTO dto) {
         testRequestService.submitTest(dto);
         return ResponseEntity.ok("Test accepted and sent for processing.");
     }
     @GetMapping("/{id}/status")
+    @Operation(summary = "Get test request status", description = "Returns the current status of a test request by ID")
     public TestStatusDTO getStatus(@PathVariable("id") Long testRequestId) {
         return testRequestService.getTestStatus(testRequestId);
+    }
+    @GetMapping
+    @AdminOnly
+    @Operation(summary = "List all test requests", description = "Returns a list of all test requests")
+    public List<TestRequestResponseDTO> getAll() {
+        return testRequestService.findAll();
     }
 }

@@ -1,4 +1,4 @@
-package com.eclept.andjelazoric_eclept_be_labflow.security;
+package com.eclept.andjelazoric_eclept_be_labflow.annotation;
 import java.lang.annotation.*;
 
 @Target(ElementType.METHOD)

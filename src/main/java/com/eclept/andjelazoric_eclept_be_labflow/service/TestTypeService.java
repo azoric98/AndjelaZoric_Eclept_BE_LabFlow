@@ -2,6 +2,7 @@ package com.eclept.andjelazoric_eclept_be_labflow.service;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.TestTypeDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
+import com.eclept.andjelazoric_eclept_be_labflow.mapper.TestTypeMapper;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,36 +12,27 @@ import java.util.List;
 public class TestTypeService {
 
     private final TestTypeRepository testTypeRepository;
+    private final TestTypeMapper testTypeMapper;
 
-    public TestTypeService(TestTypeRepository testTypeRepository) {
+    public TestTypeService(TestTypeRepository testTypeRepository, TestTypeMapper testTypeMapper) {
         this.testTypeRepository = testTypeRepository;
+        this.testTypeMapper = testTypeMapper;
     }
 
-    public TestType create(TestTypeDTO dto) {
-        TestType type = new TestType();
-        type.setName(dto.getName());
-        type.setReagentUnits(dto.getReagentUnits());
-        type.setProcessingTimeSeconds(dto.getProcessingTimeSeconds());
-        return testTypeRepository.save(type);
+    public TestTypeDTO create(TestTypeDTO dto) {
+        TestType type = testTypeMapper.toEntity(dto);
+        TestType saved = testTypeRepository.save(type);
+        return testTypeMapper.toResponseDTO(saved);
     }
 
-    public TestType update(Long id, TestTypeDTO dto) {
+    public TestTypeDTO update(Long id, TestTypeDTO dto) {
         TestType type = testTypeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Test type not found"));
-        if (dto.getName() != null) {
-            type.setName(dto.getName());
-        }
-
-        if (dto.getReagentUnits() != null) {
-            type.setReagentUnits(dto.getReagentUnits());
-        }
-
-        if (dto.getProcessingTimeSeconds() != null) {
-            type.setProcessingTimeSeconds(dto.getProcessingTimeSeconds());
-        }
-
-        return testTypeRepository.save(type);
-    }
+        if (dto.getName() != null) type.setName(dto.getName());
+        if (dto.getReagentUnits() != null) type.setReagentUnits(dto.getReagentUnits());
+        if (dto.getProcessingTimeSeconds() != null) type.setProcessingTimeSeconds(dto.getProcessingTimeSeconds());
+        TestType updated = testTypeRepository.save(type);
+        return testTypeMapper.toResponseDTO(updated);    }
 
     public void delete(Long id) {
         if (!testTypeRepository.existsById(id)) {
@@ -49,8 +41,11 @@ public class TestTypeService {
         testTypeRepository.deleteById(id);
     }
 
-    public List<TestType> findAll() {
-        return testTypeRepository.findAll();
+    public List<TestTypeDTO> findAll() {
+        return testTypeRepository.findAll()
+                .stream()
+                .map(testTypeMapper::toResponseDTO)
+                .toList();
     }
 }
 

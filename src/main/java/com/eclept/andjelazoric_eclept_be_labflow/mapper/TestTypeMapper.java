@@ -1,0 +1,25 @@
+package com.eclept.andjelazoric_eclept_be_labflow.mapper;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.TestTypeDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TestTypeMapper {
+
+    public TestType toEntity(TestTypeDTO dto) {
+        return TestType.builder()
+                .name(dto.getName())
+                .reagentUnits(dto.getReagentUnits())
+                .processingTimeSeconds(dto.getProcessingTimeSeconds())
+                .build();
+    }
+
+    // Entity -> Output DTO
+    public TestTypeDTO toResponseDTO(TestType entity) {
+        return TestTypeDTO.builder()
+                .name(entity.getName())
+                .reagentUnits(entity.getReagentUnits())
+                .processingTimeSeconds(entity.getProcessingTimeSeconds())
+                .build();
+    }
+}

@@ -1,6 +1,6 @@
 package com.eclept.andjelazoric_eclept_be_labflow.config;
 
-import com.eclept.andjelazoric_eclept_be_labflow.security.AdminInterceptor;
+import com.eclept.andjelazoric_eclept_be_labflow.interceptors.AdminInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

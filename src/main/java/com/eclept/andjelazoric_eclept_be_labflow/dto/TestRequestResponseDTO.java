@@ -1,4 +1,5 @@
 package com.eclept.andjelazoric_eclept_be_labflow.dto;
+
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +8,12 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class TestStatusDTO {
-    private Long testRequestId;
+public class TestRequestResponseDTO {
+    private Long id;
+    private Long testTypeId;
+    private boolean walkIn;
     private String testName;
-    private String technicianName;
+    private String assignedTechnicianName;
     private TestStatus status;
     private LocalDateTime receivedAt;
     private LocalDateTime completedAt;

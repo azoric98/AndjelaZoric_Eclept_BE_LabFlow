@@ -1,13 +1,15 @@
-package com.eclept.andjelazoric_eclept_be_labflow.config;
+package com.eclept.andjelazoric_eclept_be_labflow.loader;
 
 import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("local")
 public class DataLoader implements CommandLineRunner {
 
     private final TestTypeRepository testTypeRepository;
