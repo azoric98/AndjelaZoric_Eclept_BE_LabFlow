@@ -21,4 +21,10 @@ public class TestRequestProducer {
                 testRequestId
         );
     }
+
+    public void sendError(Long testRequestId) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TEST_EXCHANGE,
+                RabbitMQConfig.ERROR_ROUTING_KEY,
+                testRequestId);
+    }
 }

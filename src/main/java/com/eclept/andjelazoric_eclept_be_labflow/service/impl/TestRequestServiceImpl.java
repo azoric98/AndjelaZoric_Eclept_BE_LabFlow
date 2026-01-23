@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -101,7 +102,7 @@ public class TestRequestServiceImpl implements TestRequestService {
             return null;
         }
     }
-
+    @Override
     public Optional<TestRequest> getProcessableTestRequest(Long testRequestId) {
         Optional<TestRequest> optionalRequest = testRequestRepository.findById(testRequestId);
         if (optionalRequest.isEmpty()) {
@@ -111,6 +112,18 @@ public class TestRequestServiceImpl implements TestRequestService {
             return Optional.empty();
         }
         return optionalRequest;
+    }
+    @Override
+    public void setProcessingStatus(TestRequest testRequest, LocalDateTime time, TestStatus status) {
+        testRequest.setStatus(TestStatus.COMPLETED);
+        testRequest.setCompletedAt(time);
+        testRequestRepository.save(testRequest);
+    }
+
+    @Override
+    public void getFirstByStatusOrderByReceivedAt() {
+        testRequestRepository.findFirstByStatusOrderByReceivedAt(TestStatus.RECEIVED)
+                .ifPresent(next -> producer.sendTest(next.getId()));
     }
 
 

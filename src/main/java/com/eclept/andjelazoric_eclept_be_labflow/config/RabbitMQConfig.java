@@ -10,12 +10,18 @@ import org.springframework.amqp.core.Queue;
 @Configuration
 public class RabbitMQConfig {
     public static final String TEST_QUEUE = "labflow-tests";
+    public static final String ERROR_QUEUE = "labflow-tests-errors";
     public static final String TEST_EXCHANGE = "labflow-exchange";
     public static final String TEST_ROUTING_KEY = "labflow-routing-key";
+    public static final String ERROR_ROUTING_KEY = "labflow-error-routing-key";
 
     @Bean
     public Queue testQueue() {
-        return new Queue(TEST_QUEUE, true); // durable
+        return new Queue(TEST_QUEUE, true);
+    }
+    @Bean
+    public Queue errorQueue() {
+        return new Queue(ERROR_QUEUE, true);
     }
 
     @Bean
@@ -28,5 +34,11 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(testQueue)
                 .to(testExchange)
                 .with(TEST_ROUTING_KEY);
+    }
+    @Bean
+    public Binding errorBinding(Queue errorQueue, DirectExchange errorExchange) {
+        return BindingBuilder.bind(errorQueue)
+                .to(errorExchange)
+                .with(ERROR_ROUTING_KEY);
     }
 }

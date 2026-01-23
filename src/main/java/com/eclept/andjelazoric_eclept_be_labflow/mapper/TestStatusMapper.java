@@ -4,6 +4,8 @@ import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class TestStatusMapper {
     public TestStatusDTO toDTO(TestRequest entity) {
@@ -19,5 +21,9 @@ public class TestStatusMapper {
                 .receivedAt(entity.getReceivedAt())
                 .completedAt(entity.getCompletedAt())
                 .build();
+    }
+
+    public List<TestStatusDTO> toDto(List<TestRequest> entityList) {
+        return entityList.stream().map(this::toDTO).toList();
     }
 }
