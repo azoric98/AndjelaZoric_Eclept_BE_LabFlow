@@ -1,7 +1,7 @@
 package com.eclept.andjelazoric_eclept_be_labflow.controller;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestRequestResponseDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import com.eclept.andjelazoric_eclept_be_labflow.service.impl.TestRequestServiceImpl;
@@ -38,7 +38,7 @@ public class TestRequestController {
     @GetMapping
     @AdminOnly
     @Operation(summary = "List all test requests", description = "Returns a list of all test requests")
-    public List<TestRequestResponseDTO> getAll() {
+    public List<TestResponseDTO> getAll() {
         return testRequestService.findAllTestRequests();
     }
 }

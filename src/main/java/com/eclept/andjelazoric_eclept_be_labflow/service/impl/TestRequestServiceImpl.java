@@ -1,7 +1,7 @@
 package com.eclept.andjelazoric_eclept_be_labflow.service.impl;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestRequestResponseDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
@@ -15,9 +15,12 @@ import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +32,8 @@ public class TestRequestServiceImpl implements TestRequestService {
     private final TestRequestMapper testRequestMapper;
     private final TestStatusMapper testStatusMapper;
     private final TestTypeRepository testTypeRepository;
+    private final Logger logger = LoggerFactory.getLogger(TestRequestServiceImpl.class);
+
 
     public TestRequestServiceImpl(TestRequestRepository testRequestRepository, TechnicianRepository technicianRepository,
                               TestRequestProducer producer, TestRequestMapper testRequestMapper, TestStatusMapper testStatusMapper, TestTypeRepository testTypeRepository) {
@@ -70,12 +75,44 @@ public class TestRequestServiceImpl implements TestRequestService {
 
         return testStatusMapper.toDTO(request);
     }
-    public List<TestRequestResponseDTO> findAllTestRequests() {
+    public List<TestResponseDTO> findAllTestRequests() {
         return testRequestRepository.findAll()
                 .stream()
                 .map(testRequestMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public TestResponseDTO save(TestResponseDTO dto) {
+        try {
+            TestRequest entity = new TestRequest();
+            entity.setWalkIn(dto.isWalkIn());
+            entity.setTestType(testTypeRepository.getReferenceById(entity.getId()));
+            if (dto.getStatus() != null) {
+                entity.setStatus(dto.getStatus());
+            } else {
+                entity.setStatus(TestStatus.RECEIVED);
+            }
+            TestRequest saved = testRequestRepository.save(entity);
+            return testRequestMapper.toResponseDTO(saved);
+
+        } catch (Exception e) {
+            logger.error("Failed to save test request {}", dto.getId(), e);
+            return null;
+        }
+    }
+
+    public Optional<TestRequest> getProcessableTestRequest(Long testRequestId) {
+        Optional<TestRequest> optionalRequest = testRequestRepository.findById(testRequestId);
+        if (optionalRequest.isEmpty()) {
+            logger.warn("Test request does not exist for ID: {}", testRequestId);
+        } else if (optionalRequest.get().getStatus() != TestStatus.RECEIVED) {
+            logger.info("Test ID {} is already processed or in progress", testRequestId);
+            return Optional.empty();
+        }
+        return optionalRequest;
+    }
+
 
 }
 

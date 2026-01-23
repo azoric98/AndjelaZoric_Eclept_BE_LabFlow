@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestRequestResponseDTO {
+public class TestResponseDTO {
     private Long id;
     private Long testTypeId;
     private boolean walkIn;

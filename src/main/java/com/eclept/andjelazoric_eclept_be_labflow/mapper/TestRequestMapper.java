@@ -1,7 +1,7 @@
 package com.eclept.andjelazoric_eclept_be_labflow.mapper;
 
 import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestRequestResponseDTO;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
@@ -22,8 +22,8 @@ public class TestRequestMapper {
                 .build();
     }
 
-    public TestRequestResponseDTO toResponseDTO(TestRequest entity) {
-        return TestRequestResponseDTO.builder()
+    public TestResponseDTO toResponseDTO(TestRequest entity) {
+        return TestResponseDTO.builder()
                 .id(entity.getId())
                 .testTypeId(entity.getTestType().getId())
                 .walkIn(entity.isWalkIn())
