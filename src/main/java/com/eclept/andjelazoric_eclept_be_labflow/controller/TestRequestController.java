@@ -1,9 +1,9 @@
 package com.eclept.andjelazoric_eclept_be_labflow.controller;
 
+import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import com.eclept.andjelazoric_eclept_be_labflow.service.impl.TestRequestServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,11 +30,13 @@ public class TestRequestController {
         testRequestService.submitTest(dto);
         return ResponseEntity.ok("Test accepted and sent for processing.");
     }
+
     @GetMapping("/{id}/status")
     @Operation(summary = "Get test request status", description = "Returns the current status of a test request by ID")
     public TestStatusDTO getStatus(@PathVariable("id") Long testRequestId) {
         return testRequestService.getTestStatus(testRequestId);
     }
+
     @GetMapping
     @AdminOnly
     @Operation(summary = "List all test requests", description = "Returns a list of all test requests")

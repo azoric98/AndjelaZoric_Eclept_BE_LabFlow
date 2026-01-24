@@ -4,7 +4,8 @@ import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
 
 public final class TechnicianTestData {
 
-    private TechnicianTestData() {}
+    private TechnicianTestData() {
+    }
 
     public static Technician availableWithFullReagents() {
         return Technician.builder()

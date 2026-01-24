@@ -4,7 +4,8 @@ import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 
 public final class TestTypeTestData {
 
-    private TestTypeTestData() {}
+    private TestTypeTestData() {
+    }
 
     public static TestType bloodTest() {
         return TestType.builder()
@@ -21,6 +22,7 @@ public final class TestTypeTestData {
                 .reagentUnits(30)
                 .build();
     }
+
     public static TestType pcrTest() {
         return TestType.builder()
                 .name("PCR Test")
@@ -37,7 +39,9 @@ public final class TestTypeTestData {
                 .build();
     }
 
-    /** Edge case – test koji skoro troši sve reagense */
+    /**
+     * Edge case – test koji skoro troši sve reagense
+     */
     public static TestType heavyTest() {
         return TestType.builder()
                 .name("Heavy Load Test")

@@ -26,6 +26,7 @@ public class TestType {
             fetch = FetchType.LAZY
     )
     private List<TestRequest> testRequests = new ArrayList<>();
+
     public TestType(Long id, String name, int processingTimeSeconds, int reagentUnits) {
         this.id = id;
         this.name = name;

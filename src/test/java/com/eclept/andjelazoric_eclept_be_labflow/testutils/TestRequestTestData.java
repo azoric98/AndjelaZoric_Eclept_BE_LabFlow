@@ -4,7 +4,8 @@ import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
 
 public final class TestRequestTestData {
 
-    private TestRequestTestData() {}
+    private TestRequestTestData() {
+    }
 
     /* ====== Hospital requests ====== */
 

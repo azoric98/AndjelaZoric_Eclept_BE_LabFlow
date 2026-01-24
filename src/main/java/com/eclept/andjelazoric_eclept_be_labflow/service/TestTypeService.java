@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TestTypeService {
-     TestTypeDTO create(TestTypeDTO dto);
-     TestTypeDTO update(Long id, TestTypeDTO dto);
+    TestTypeDTO create(TestTypeDTO dto);
+
+    TestTypeDTO update(Long id, TestTypeDTO dto);
+
     void delete(Long id);
+
     List<TestTypeDTO> findAll();
+
     Optional<TestTypeDTO> findById(Long id);
 
 }

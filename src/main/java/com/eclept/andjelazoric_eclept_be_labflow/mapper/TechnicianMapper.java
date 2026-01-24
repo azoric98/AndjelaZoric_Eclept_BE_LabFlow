@@ -19,6 +19,7 @@ public class TechnicianMapper {
                 .availableReagents(entity.getAvailableReagents())
                 .build();
     }
+
     public Technician toEntity(
             TechnicianDTO dto
     ) {

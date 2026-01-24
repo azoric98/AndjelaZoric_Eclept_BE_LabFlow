@@ -53,26 +53,26 @@ public class TechnicianServiceImpl implements com.eclept.andjelazoric_eclept_be_
 
     @Override
     public void ensureSufficientReagents(Technician tech, TestType testType) throws InterruptedException {
-            // Reagents check
-            if (tech.getAvailableReagents() < testType.getReagentUnits()) {
-                logger.info("""
-                    {} does not have enough reagents
-                    Available: {}
-                    Needed: {}""",
-                        tech.getName(), tech.getAvailableReagents(), testType.getReagentUnits());
+        // Reagents check
+        if (tech.getAvailableReagents() < testType.getReagentUnits()) {
+            logger.info("""
+                            {} does not have enough reagents
+                            Available: {}
+                            Needed: {}""",
+                    tech.getName(), tech.getAvailableReagents(), testType.getReagentUnits());
 
-                tech.setReplacingReagents(true);
-                repository.saveAndFlush(tech);
+            tech.setReplacingReagents(true);
+            repository.saveAndFlush(tech);
 
-                logger.info("{} is replacing reagents at {}", tech.getName(), LocalDateTime.now());
-                    Thread.sleep(reagentReplacementTimeMinutes * 60 * 1000L);
-                tech.setAvailableReagents(500);
-                tech.setReplacingReagents(false);
-                logger.info("{} finished replacing reagents at {}", tech.getName(), LocalDateTime.now());
-            }
+            logger.info("{} is replacing reagents at {}", tech.getName(), LocalDateTime.now());
+            Thread.sleep(reagentReplacementTimeMinutes * 60 * 1000L);
+            tech.setAvailableReagents(500);
+            tech.setReplacingReagents(false);
+            logger.info("{} finished replacing reagents at {}", tech.getName(), LocalDateTime.now());
+        }
 
-            tech.setAvailableReagents(tech.getAvailableReagents() - testType.getReagentUnits());
-            repository.save(tech);
+        tech.setAvailableReagents(tech.getAvailableReagents() - testType.getReagentUnits());
+        repository.save(tech);
 
     }
 

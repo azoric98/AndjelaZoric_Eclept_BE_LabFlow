@@ -38,7 +38,8 @@ public class TestTypeServiceImpl implements TestTypeService {
         if (dto.getReagentUnits() != null) type.setReagentUnits(dto.getReagentUnits());
         if (dto.getProcessingTimeSeconds() != null) type.setProcessingTimeSeconds(dto.getProcessingTimeSeconds());
         TestType updated = testTypeRepository.save(type);
-        return testTypeMapper.toResponseDTO(updated);    }
+        return testTypeMapper.toResponseDTO(updated);
+    }
 
     public void delete(Long id) {
         if (!testTypeRepository.existsById(id)) {
@@ -53,6 +54,7 @@ public class TestTypeServiceImpl implements TestTypeService {
                 .map(testTypeMapper::toResponseDTO)
                 .toList();
     }
+
     @Override
     public Optional<TestTypeDTO> findById(Long id) {
         try {

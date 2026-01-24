@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface TestRequestRepository extends JpaRepository<TestRequest, Long> {
 
     long countByStatusIn(Collection<TestStatus> statuses);
-    
+
     Optional<TestRequest> findFirstByStatusOrderByReceivedAt(TestStatus status);
 
 

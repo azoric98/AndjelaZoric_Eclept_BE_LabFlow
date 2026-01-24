@@ -7,11 +7,11 @@ import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import com.eclept.andjelazoric_eclept_be_labflow.queue.TestRequestProducer;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TechnicianService;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
@@ -60,7 +60,7 @@ public class TestProcessor {
     private void processTestSimulation(TestRequest testRequest, Technician tech) throws InterruptedException {
 
         testRequestService.setProcessingStatus(testRequest, null, TestStatus.PROCESSING);
-       technicianService.ensureSufficientReagents(tech, testRequest.getTestType());
+        technicianService.ensureSufficientReagents(tech, testRequest.getTestType());
         Thread.sleep(testRequest.getTestType().getProcessingTimeSeconds() * 1000L);
 
         testRequestService.setProcessingStatus(testRequest, LocalDateTime.now(), TestStatus.COMPLETED);

@@ -9,8 +9,11 @@ import java.util.Optional;
 public interface TechnicianService {
 
     Optional<Technician> findAvailableTechnician(Long testRequestId);
-    Technician save(Technician tech);
-    void ensureSufficientReagents(Technician tech, TestType testType) throws InterruptedException;
-    Optional<TechnicianDTO> findTechnicianById(Long technicianId) ;
 
-    }
+    Technician save(Technician tech);
+
+    void ensureSufficientReagents(Technician tech, TestType testType) throws InterruptedException;
+
+    Optional<TechnicianDTO> findTechnicianById(Long technicianId);
+
+}

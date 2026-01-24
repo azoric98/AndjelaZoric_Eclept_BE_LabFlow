@@ -1,7 +1,7 @@
 package com.eclept.andjelazoric_eclept_be_labflow.controller;
 
-import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestTypeDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
+import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestTypeDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.service.impl.TestTypeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;

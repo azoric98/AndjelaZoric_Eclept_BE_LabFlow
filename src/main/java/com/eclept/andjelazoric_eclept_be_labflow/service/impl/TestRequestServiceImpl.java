@@ -1,8 +1,8 @@
 package com.eclept.andjelazoric_eclept_be_labflow.service.impl;
 
+import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
-import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestStatusDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
@@ -37,7 +37,7 @@ public class TestRequestServiceImpl implements TestRequestService {
 
 
     public TestRequestServiceImpl(TestRequestRepository testRequestRepository, TechnicianRepository technicianRepository,
-                              TestRequestProducer producer, TestRequestMapper testRequestMapper, TestStatusMapper testStatusMapper, TestTypeRepository testTypeRepository) {
+                                  TestRequestProducer producer, TestRequestMapper testRequestMapper, TestStatusMapper testStatusMapper, TestTypeRepository testTypeRepository) {
         this.testRequestRepository = testRequestRepository;
         this.technicianRepository = technicianRepository;
         this.producer = producer;
@@ -60,7 +60,7 @@ public class TestRequestServiceImpl implements TestRequestService {
                             List.of(TestStatus.RECEIVED, TestStatus.PROCESSING)
                     );
 
-            if (availableTech < 1 && activeOrWaiting>= 20) {
+            if (availableTech < 1 && activeOrWaiting >= 20) {
                 throw new QueueFullException("The hospital queue is full.");
             }
         }
@@ -76,6 +76,7 @@ public class TestRequestServiceImpl implements TestRequestService {
 
         return testStatusMapper.toDTO(request);
     }
+
     public List<TestResponseDTO> findAllTestRequests() {
         return testRequestRepository.findAll()
                 .stream()
@@ -102,6 +103,7 @@ public class TestRequestServiceImpl implements TestRequestService {
             return null;
         }
     }
+
     @Override
     public Optional<TestRequest> getProcessableTestRequest(Long testRequestId) {
         Optional<TestRequest> optionalRequest = testRequestRepository.findById(testRequestId);
@@ -113,6 +115,7 @@ public class TestRequestServiceImpl implements TestRequestService {
         }
         return optionalRequest;
     }
+
     @Override
     public void setProcessingStatus(TestRequest testRequest, LocalDateTime time, TestStatus status) {
         testRequest.setStatus(TestStatus.COMPLETED);

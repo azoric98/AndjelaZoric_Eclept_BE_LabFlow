@@ -1,4 +1,5 @@
 package com.eclept.andjelazoric_eclept_be_labflow.interceptors;
+
 import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
 

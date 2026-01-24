@@ -1,11 +1,11 @@
 package com.eclept.andjelazoric_eclept_be_labflow.integration;
 
-import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.Technician;
+import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.processor.TestProcessor;
-import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository;
+import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TechnicianService;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
@@ -15,17 +15,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import static com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus.*;
+import static com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus.RECEIVED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
@@ -76,7 +76,7 @@ class TestProcessingIntegrationTest {
     void testTechnicianAssignment() {
         Technician tech = TechnicianTestData.availableWithFullReagents();
         technicianRepository.save(tech);
-        TestType testType= TestTypeTestData.bloodTest();
+        TestType testType = TestTypeTestData.bloodTest();
         testType = testTypeRepository.save(testType);
 
         TestRequest request = new TestRequest();
@@ -93,7 +93,7 @@ class TestProcessingIntegrationTest {
     void testProcessingTimeDependsOnTestType() {
         Technician tech = TechnicianTestData.availableWithFullReagents();
         technicianRepository.save(tech);
-        TestType testType= TestTypeTestData.bloodTest();
+        TestType testType = TestTypeTestData.bloodTest();
         testType = testTypeRepository.save(testType);
 
         LocalDateTime receivedAt = LocalDateTime.now();
