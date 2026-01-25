@@ -22,19 +22,19 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestTypeServiceImplTest {
-    
+
     @Mock
     private TestTypeRepository testTypeRepository;
-    
+
     @Mock
     private TestTypeMapper testTypeMapper;
-    
+
     @InjectMocks
     private TestTypeServiceImpl testTypeService;
-    
+
     private TestType testType;
     private TestTypeDTO testTypeDTO;
-    
+
     @BeforeEach
     void setUp() {
         testType = new TestType();
@@ -49,6 +49,7 @@ public class TestTypeServiceImplTest {
                 .reagentUnits(20)
                 .build();
     }
+
     @Test
     void create_ShouldReturnCreatedTestType() {
         when(testTypeMapper.toEntity(testTypeDTO)).thenReturn(testType);
@@ -63,6 +64,7 @@ public class TestTypeServiceImplTest {
         assertThat(result.getReagentUnits()).isEqualTo(20);
         verify(testTypeRepository, times(1)).save(testType);
     }
+
     @Test
     void update_ShouldReturnUpdatedTestType_WhenTestTypeExists() {
         TestTypeDTO updateDTO = TestTypeDTO.builder()

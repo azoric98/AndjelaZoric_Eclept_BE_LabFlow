@@ -35,7 +35,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         if (apiKey == null || apiKey.isBlank()) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return false;
-}
+        }
         if (!adminApiKey.equals(apiKey)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return false;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,6 +33,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleAll(Exception ex) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", ex.getMessage());
     }
+
     @ExceptionHandler(LabFlowException.class)
     public ResponseEntity<Map<String, Object>> handleLabFlowException(LabFlowException ex) {
         if (ex.getMessage().contains("Test type not found")) {

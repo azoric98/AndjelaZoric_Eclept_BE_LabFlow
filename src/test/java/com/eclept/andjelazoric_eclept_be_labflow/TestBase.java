@@ -57,15 +57,15 @@ public class TestBase {
     }
 
     @BeforeEach
-     void setUpTestData() {
+    void setUpTestData() {
         testRequestRepository.deleteAll();
         technicianRepository.deleteAll();
         testTypeRepository.deleteAll();
 
-            testTypeRepository.save(new TestType(null, "Blood Test", 60, 20));
-            testTypeRepository.save(new TestType(null, "Urine Test", 90, 30));
-            testTypeRepository.save(new TestType(null, "PCR Test", 180, 100));
-            testTypeRepository.save(new TestType(null, "Allergy Panel", 240, 150));
+        testTypeRepository.save(new TestType(null, "Blood Test", 60, 20));
+        testTypeRepository.save(new TestType(null, "Urine Test", 90, 30));
+        testTypeRepository.save(new TestType(null, "PCR Test", 180, 100));
+        testTypeRepository.save(new TestType(null, "Allergy Panel", 240, 150));
 
 
         if (technicianRepository.count() == 0) {

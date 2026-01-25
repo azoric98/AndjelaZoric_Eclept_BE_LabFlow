@@ -4,10 +4,10 @@ import com.eclept.andjelazoric_eclept_be_labflow.TestBase;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -150,7 +150,7 @@ class TestProcessingIntegrationTest extends TestBase {
     private void makeAllTechniciansUnavailable() {
         technicianRepository.findAll().forEach(t -> {
             t.setAvailable(false);
-        technicianRepository.save(t);
+            technicianRepository.save(t);
         });
     }
 

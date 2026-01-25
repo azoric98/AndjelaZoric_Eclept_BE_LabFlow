@@ -11,12 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TechnicianServiceImplTest {
@@ -34,7 +33,7 @@ public class TechnicianServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        technician= new Technician();
+        technician = new Technician();
         technician.setId(1L);
         technician.setName("Tech 1");
         technician.setMachineName("Machine 1");
@@ -62,7 +61,7 @@ public class TechnicianServiceImplTest {
 
         Optional<Technician> result = service.findAvailableTechnician(1L);
         assertThat(result).isEmpty();
-        verify(repository,times(1)).findFirstByAvailableTrue();
+        verify(repository, times(1)).findFirstByAvailableTrue();
 
     }
 
