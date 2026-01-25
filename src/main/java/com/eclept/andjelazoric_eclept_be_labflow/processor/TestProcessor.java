@@ -7,8 +7,7 @@ import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
 import com.eclept.andjelazoric_eclept_be_labflow.queue.TestRequestProducer;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TechnicianService;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,12 +15,12 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
+@Slf4j
 public class TestProcessor {
 
     private final TechnicianService technicianService;
     private final TestRequestService testRequestService;
     private final TestRequestProducer producer;
-    private final Logger logger = LoggerFactory.getLogger(TestProcessor.class);
 
 
     @Value(value = "${labflow.reagentReplacementTimeMinutes}")
@@ -44,10 +43,10 @@ public class TestProcessor {
                     processTestSimulation(testRequest, tech);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    logger.error("Processing of test ID {} was aborted", testRequestId, e);
+                    log.error("Processing of test ID {} was aborted", testRequestId, e);
                 } catch (Exception e) {
                     producer.sendError(testRequestId);
-                    logger.error("Error processing test ID {}: {}", testRequestId, e.getMessage(), e);
+                    log.error("Error processing test ID {}: {}", testRequestId, e.getMessage(), e);
                 } finally {
                     tech.setAvailable(true);
                     technicianService.save(tech);
@@ -65,7 +64,7 @@ public class TestProcessor {
 
         testRequestService.setProcessingStatus(testRequest, LocalDateTime.now(), TestStatus.COMPLETED);
 
-        logger.info("Test ID {} was processed successfully", testRequest.getId());
+        log.info("Test ID {} was processed successfully", testRequest.getId());
     }
 
 }

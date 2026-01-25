@@ -15,8 +15,7 @@ import com.eclept.andjelazoric_eclept_be_labflow.repository.TechnicianRepository
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestRequestRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class TestRequestServiceImpl implements TestRequestService {
 
     private final TestRequestRepository testRequestRepository;
@@ -34,7 +34,6 @@ public class TestRequestServiceImpl implements TestRequestService {
     private final TestRequestMapper testRequestMapper;
     private final TestStatusMapper testStatusMapper;
     private final TestTypeRepository testTypeRepository;
-    private final Logger logger = LoggerFactory.getLogger(TestRequestServiceImpl.class);
 
 
     public TestRequestServiceImpl(TestRequestRepository testRequestRepository, TechnicianRepository technicianRepository,
@@ -98,7 +97,7 @@ public class TestRequestServiceImpl implements TestRequestService {
             return testRequestMapper.toResponseDTO(saved);
 
         } catch (Exception e) {
-            logger.error("Failed to save test request {}", dto.getId(), e);
+            log.error("Failed to save test request {}", dto.getId(), e);
             return null;
         }
     }
@@ -107,9 +106,9 @@ public class TestRequestServiceImpl implements TestRequestService {
     public Optional<TestRequest> getProcessableTestRequest(Long testRequestId) {
         Optional<TestRequest> optionalRequest = testRequestRepository.findById(testRequestId);
         if (optionalRequest.isEmpty()) {
-            logger.warn("Test request does not exist for ID: {}", testRequestId);
+            log.warn("Test request does not exist for ID: {}", testRequestId);
         } else if (optionalRequest.get().getStatus() != TestStatus.RECEIVED) {
-            logger.info("Test ID {} is already processed or in progress", testRequestId);
+            log.info("Test ID {} is already processed or in progress", testRequestId);
             return Optional.empty();
         }
         return optionalRequest;

@@ -5,19 +5,18 @@ import com.eclept.andjelazoric_eclept_be_labflow.entity.TestType;
 import com.eclept.andjelazoric_eclept_be_labflow.mapper.TestTypeMapper;
 import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestTypeService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class TestTypeServiceImpl implements TestTypeService {
 
     private final TestTypeRepository testTypeRepository;
     private final TestTypeMapper testTypeMapper;
-    private final Logger logger = LoggerFactory.getLogger(TestTypeServiceImpl.class);
 
 
     public TestTypeServiceImpl(TestTypeRepository testTypeRepository, TestTypeMapper testTypeMapper) {
@@ -61,7 +60,7 @@ public class TestTypeServiceImpl implements TestTypeService {
             return testTypeRepository.findById(id)
                     .map(testTypeMapper::toResponseDTO);
         } catch (Exception e) {
-            logger.error("Failed to find TestType with id {}", id, e);
+            log.error("Failed to find TestType with id {}", id, e);
             return Optional.empty();
         }
     }
