@@ -5,6 +5,8 @@ import com.eclept.andjelazoric_eclept_be_labflow.dto.request.TestRequestDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.entity.TestRequest;
 import com.eclept.andjelazoric_eclept_be_labflow.enums.TestStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +17,7 @@ public interface TestRequestService {
 
     TestStatusDTO getTestStatus(Long testRequestId);
 
-    List<TestResponseDTO> findAllTestRequests();
+    Page<TestResponseDTO> findAllTestRequests(Pageable pageable);
 
     TestResponseDTO save(TestResponseDTO dto);
 

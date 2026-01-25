@@ -25,6 +25,7 @@ public class TestType {
             mappedBy = "testType",
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<TestRequest> testRequests = new ArrayList<>();
 
     public TestType(Long id, String name, int processingTimeSeconds, int reagentUnits) {

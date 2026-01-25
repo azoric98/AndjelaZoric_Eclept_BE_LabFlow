@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
+    private static final String ADMIN_HEADER = "X-ADMIN-KEY";
 
     @Value("${labflow.admin.api-key}")
     private String adminApiKey;
@@ -30,8 +31,11 @@ public class AdminInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String apiKey = request.getHeader("X-ADMIN-KEY");
-
+        String apiKey = request.getHeader(ADMIN_HEADER);
+        if (apiKey == null || apiKey.isBlank()) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return false;
+}
         if (!adminApiKey.equals(apiKey)) {
             response.setStatus(HttpStatus.FORBIDDEN.value());
             return false;

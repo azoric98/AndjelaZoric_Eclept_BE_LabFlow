@@ -29,6 +29,7 @@ public class Technician {
             mappedBy = "assignedTechnician",
             fetch = FetchType.LAZY
     )
+    @Builder.Default
     private List<TestRequest> assignedTests = new ArrayList<>();
 
     public Technician(Long id, String name, String machineName, boolean available, boolean replacingReagents, int availableReagents) {

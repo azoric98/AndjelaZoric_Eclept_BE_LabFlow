@@ -7,10 +7,12 @@ import com.eclept.andjelazoric_eclept_be_labflow.dto.response.TestResponseDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.service.impl.TestRequestServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tests")
@@ -39,8 +41,15 @@ public class TestRequestController {
 
     @GetMapping
     @AdminOnly
-    @Operation(summary = "List all test requests", description = "Returns a list of all test requests")
-    public List<TestResponseDTO> getAll() {
-        return testRequestService.findAllTestRequests();
+    @Operation(
+            summary = "List all test requests",
+            description = "Returns a paginated list of all test requests"
+    )
+    public Page<TestResponseDTO> getAll(
+            @PageableDefault(page = 0, size = 20)
+            Pageable pageable
+    ) {
+        return testRequestService.findAllTestRequests(pageable);
     }
+
 }

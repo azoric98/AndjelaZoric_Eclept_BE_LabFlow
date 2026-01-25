@@ -17,12 +17,13 @@ import com.eclept.andjelazoric_eclept_be_labflow.repository.TestTypeRepository;
 import com.eclept.andjelazoric_eclept_be_labflow.service.TestRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TestRequestServiceImpl implements TestRequestService {
@@ -77,11 +78,9 @@ public class TestRequestServiceImpl implements TestRequestService {
         return testStatusMapper.toDTO(request);
     }
 
-    public List<TestResponseDTO> findAllTestRequests() {
-        return testRequestRepository.findAll()
-                .stream()
-                .map(testRequestMapper::toResponseDTO)
-                .collect(Collectors.toList());
+    public Page<TestResponseDTO> findAllTestRequests(Pageable pageable) {
+        return testRequestRepository.findAll(pageable)
+                .map(testRequestMapper::toResponseDTO);
     }
 
     @Override
