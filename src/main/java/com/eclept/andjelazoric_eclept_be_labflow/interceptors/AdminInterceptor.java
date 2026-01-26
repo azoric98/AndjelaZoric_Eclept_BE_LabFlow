@@ -21,7 +21,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             HttpServletRequest request,
             HttpServletResponse response,
             Object handler
-    ) throws Exception {
+    ) {
 
         if (!(handler instanceof HandlerMethod method)) {
             return true;

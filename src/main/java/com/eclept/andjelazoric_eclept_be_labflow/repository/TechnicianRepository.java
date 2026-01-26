@@ -8,6 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface TechnicianRepository extends JpaRepository<Technician, Long> {
+
     Optional<Technician> findFirstByAvailableTrue();
 
     int countAllByAvailable(boolean available);

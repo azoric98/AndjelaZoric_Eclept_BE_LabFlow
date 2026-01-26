@@ -46,6 +46,7 @@ public class TestRequestServiceImpl implements TestRequestService {
         this.testTypeRepository = testTypeRepository;
     }
 
+    @Override
     public void submitTest(TestRequestDTO dto) {
         TestType testType = testTypeRepository.findById(dto.getTestTypeId())
                 .orElseThrow(() -> new LabFlowException("Test type not found"));
@@ -70,6 +71,7 @@ public class TestRequestServiceImpl implements TestRequestService {
         producer.sendTest(request.getId());
     }
 
+    @Override
     public TestStatusDTO getTestStatus(Long testRequestId) {
         TestRequest request = testRequestRepository.findById(testRequestId)
                 .orElseThrow(() -> new LabFlowException("Test request not found with ID: " + testRequestId));
@@ -77,6 +79,7 @@ public class TestRequestServiceImpl implements TestRequestService {
         return testStatusMapper.toDTO(request);
     }
 
+    @Override
     public Page<TestResponseDTO> findAllTestRequests(Pageable pageable) {
         return testRequestRepository.findAll(pageable)
                 .map(testRequestMapper::toResponseDTO);
@@ -116,7 +119,7 @@ public class TestRequestServiceImpl implements TestRequestService {
 
     @Override
     public void setProcessingStatus(TestRequest testRequest, LocalDateTime time, TestStatus status) {
-        testRequest.setStatus(TestStatus.COMPLETED);
+        testRequest.setStatus(status);
         testRequest.setCompletedAt(time);
         testRequestRepository.save(testRequest);
     }

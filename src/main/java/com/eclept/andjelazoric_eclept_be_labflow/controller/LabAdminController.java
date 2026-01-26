@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/test-types")
-
 public class LabAdminController {
 
     private final TestTypeServiceImpl testTypeService;

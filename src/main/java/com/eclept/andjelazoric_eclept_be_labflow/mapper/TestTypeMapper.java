@@ -15,7 +15,6 @@ public class TestTypeMapper {
                 .build();
     }
 
-    // Entity -> Output DTO
     public TestTypeDTO toResponseDTO(TestType entity) {
         return TestTypeDTO.builder()
                 .name(entity.getName())

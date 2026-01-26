@@ -24,12 +24,14 @@ public class TestTypeServiceImpl implements TestTypeService {
         this.testTypeMapper = testTypeMapper;
     }
 
+    @Override
     public TestTypeDTO create(TestTypeDTO dto) {
         TestType type = testTypeMapper.toEntity(dto);
         TestType saved = testTypeRepository.save(type);
         return testTypeMapper.toResponseDTO(saved);
     }
 
+    @Override
     public TestTypeDTO update(Long id, TestTypeDTO dto) {
         TestType type = testTypeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Test type not found"));
@@ -40,6 +42,7 @@ public class TestTypeServiceImpl implements TestTypeService {
         return testTypeMapper.toResponseDTO(updated);
     }
 
+    @Override
     public void delete(Long id) {
         if (!testTypeRepository.existsById(id)) {
             throw new IllegalArgumentException("Test type not found");
@@ -47,6 +50,7 @@ public class TestTypeServiceImpl implements TestTypeService {
         testTypeRepository.deleteById(id);
     }
 
+    @Override
     public List<TestTypeDTO> findAll() {
         return testTypeRepository.findAll()
                 .stream()
