@@ -82,7 +82,7 @@ Swagger UI is available at: http://localhost:8080/swagger-ui.html
 ```
 src/main/java/com/eclept/andjelazoric_eclept_be_labflow/
 |
-|-- annotation/               # Annotation 
+|-- annotation/              # Annotation 
 |-- config/                  # Configuration (RabbitMQ, WebSocket, Web)
 |-- controller/              # REST controllers
 |   |-- TestRequestController.java    # API for test requests
