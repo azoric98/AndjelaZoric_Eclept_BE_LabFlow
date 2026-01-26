@@ -4,6 +4,7 @@ import com.eclept.andjelazoric_eclept_be_labflow.annotation.AdminOnly;
 import com.eclept.andjelazoric_eclept_be_labflow.dto.common.TestTypeDTO;
 import com.eclept.andjelazoric_eclept_be_labflow.service.impl.TestTypeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class LabAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a new test type",
             description = "Adds a new test type to the system with name, reagent units, and processing time.")
-    public TestTypeDTO create(@RequestBody TestTypeDTO dto) {
+    public TestTypeDTO create(@RequestBody @Valid TestTypeDTO dto) {
         return testTypeService.create(dto);
     }
 
