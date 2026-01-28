@@ -48,12 +48,14 @@ This command will start:
 #### Local Development Credentials
 
 **PostgreSQL:**
+
 - Host: `localhost:5432`
 - Database: `labflow`
 - Username: `labflow`
 - Password: `labflow`
 
 **RabbitMQ:**
+
 - Host: `localhost:5672`
 - Username: `guest`
 - Password: `guest`
@@ -62,20 +64,18 @@ This command will start:
 ### Running the Application
 
 Using Maven Wrapper:
+
 ```bash
 ./mvnw spring-boot:run
 ```
 
 Using installed Maven:
+
 ```bash
 mvn spring-boot:run
 ```
 
 The application will start on `http://localhost:8080` with the `local` profile active.
-
-## API Documentation
-
-Swagger UI is available at: http://localhost:8080/swagger-ui.html
 
 ## Project Structure
 
@@ -141,38 +141,66 @@ src/main/java/com/eclept/andjelazoric_eclept_be_labflow/
 ### Test Requests
 
 **POST /api/tests**
+
 - Creates a new test request
 - No authorization required
 
 **GET /api/tests/{id}/status**
+
 - Returns the current status of a test
 - No authorization required
 
 **GET /api/tests**
+
 - Returns a paginated list of all test requests
 - Requires Admin authorization
 
 ### Admin - Test Types
 
 **GET /api/admin/test-types**
+
 - Returns all test types
 - No authorization required
 
 **POST /api/admin/test-types**
+
 - Creates a new test type
 - Requires Admin authorization
 
 **PUT /api/admin/test-types/{id}**
+
 - Updates an existing test type
 - Requires Admin authorization
 
 **DELETE /api/admin/test-types/{id}**
+
 - Deletes a test type
 - Requires Admin authorization
 
 ### Authorization
 
-Admin endpoints require the `X-API-KEY` header with the value defined in `labflow.admin.api-key` property (default: `admin`).
+Admin endpoints require the `X-API-KEY` header with the value defined in `labflow.admin.api-key` property (default:
+`admin`).
+
+### Path Parameters / Notes on IDs
+
+**Note:**  
+For all endpoints that use `{id}` (e.g., `/api/tests/{id}/status`, `/api/admin/test-types/{id}`)
+
+**You must replace `{id}` with a valid ID from your environment.**
+
+In Postman, you can use **collection or environment variables**, for example:
+
+- `{{testRequestId}}` — for a test request ID
+- `{{testTypeId}}` — for a test type ID
+
+**Example usage:**
+
+```http
+GET    http://localhost:8080/api/tests/{{testRequestId}}/status
+PUT    http://localhost:8080/api/admin/test-types/{{testTypeId}}
+DELETE http://localhost:8080/api/admin/test-types/{{testTypeId}}
+```
 
 ## Profiles
 
@@ -186,27 +214,43 @@ Admin endpoints require the `X-API-KEY` header with the value defined in `labflo
 When running with the `local` profile, the following data is automatically created:
 
 **Test Types:**
+
 - Blood Test (60s processing time, 20 reagent units)
 - Urine Test (90s processing time, 30 reagent units)
 - PCR Test (180s processing time, 100 reagent units)
 - Allergy Panel (240s processing time, 150 reagent units)
 
 **Technicians:**
+
 - 5 technicians with machines, each with 500 reagent units
+
+### Postman Collection
+
+A ready-to-use Postman collection is provided in the `postman/` folder.
+
+**Import into Postman:**
+
+1. Open Postman.
+2. Click **Import** → select `postman/labflow-api-collection.json`.
+3. Optionally, import environment variables from `postman/labflow-api-environment.json`.
+4. Replace placeholder variables like `{{testTypeId}}` or `{{testRequestId}}` with valid values in your environment.
 
 ## Running Tests
 
 Run all tests:
+
 ```bash
 ./mvnw test
 ```
 
 Run only unit tests:
+
 ```bash
 ./mvnw test -Dtest="**/unit/**"
 ```
 
 Run only integration tests:
+
 ```bash
 ./mvnw test -Dtest="**/integration/**"
 ```
@@ -225,11 +269,13 @@ Main configuration options in `application.properties`:
 ## Stopping Services
 
 Stop the containers:
+
 ```bash
 docker-compose down
 ```
 
 Stop and remove data volumes:
+
 ```bash
 docker-compose down -v
 ```

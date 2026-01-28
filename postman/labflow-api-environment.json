@@ -1,0 +1,263 @@
+{
+  "info": {
+    "_postman_id": "9287c1c2-6c58-4bd3-b0f8-6f06f4aa615e",
+    "name": "LabFlow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26070199"
+  },
+  "item": [
+    {
+      "name": "get all test types",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/test-types/all",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "test-types",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create test type",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-ADMIN-KEY",
+            "value": "admin",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": 12,\n  \"reagentUnits\": 12,\n  \"processingTimeSeconds\": 12\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/admin/test-types",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "test-types"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update test type",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-ADMIN-KEY",
+            "value": "admin",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n   \"name\": 12,\n  \"reagentUnits\": 12\n  \n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/admin/test-types/{{testTypeId}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "test-types",
+            "{{testTypeId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete test type",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-ADMIN-KEY",
+            "value": "admina",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated CRP\"\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/admin/test-types/{{testTypeId}}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "test-types",
+            "{{testTypeId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "check test status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/tests/{{testRequestId}}/status",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "tests",
+            "{{testRequestId}}",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "send test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"testTypeId\": 15,\n  \"walkIn\": true\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/tests",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "tests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get all tests with pagination",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "X-ADMIN-KEY",
+            "value": "admin",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"testTypeId\": 5,\n  \"walkIn\": false\n}\n"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/tests/all?page=0&size=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "tests",
+            "all"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

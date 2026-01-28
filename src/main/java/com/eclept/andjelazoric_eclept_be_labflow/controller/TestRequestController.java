@@ -39,7 +39,7 @@ public class TestRequestController {
         return testRequestService.getTestStatus(testRequestId);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @AdminOnly
     @Operation(
             summary = "List all test requests",

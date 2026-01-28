@@ -22,7 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Testcontainers
-public class TestBase {
+public abstract class TestBase {
     @Autowired
     protected MockMvc mockMvc;
 
@@ -58,9 +58,9 @@ public class TestBase {
 
     @BeforeEach
     void setUpTestData() {
-        testRequestRepository.deleteAll();
-        technicianRepository.deleteAll();
-        testTypeRepository.deleteAll();
+        testRequestRepository.deleteAllInBatch();
+        technicianRepository.deleteAllInBatch();
+        testTypeRepository.deleteAllInBatch();
 
         testTypeRepository.save(new TestType(null, "Blood Test", 60, 20));
         testTypeRepository.save(new TestType(null, "Urine Test", 90, 30));

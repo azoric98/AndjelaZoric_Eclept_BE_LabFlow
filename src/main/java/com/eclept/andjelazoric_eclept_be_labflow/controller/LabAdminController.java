@@ -44,7 +44,7 @@ public class LabAdminController {
         testTypeService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "List all test types", description = "Returns all test types in the system")
     public List<TestTypeDTO> getAll() {
         return testTypeService.findAll();

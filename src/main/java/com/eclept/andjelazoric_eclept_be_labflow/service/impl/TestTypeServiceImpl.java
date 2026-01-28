@@ -32,7 +32,8 @@ public class TestTypeServiceImpl implements TestTypeService {
 
         if (dto.getName() == null || dto.getName().isBlank()) errors.add("Test type name must not be empty");
         if (dto.getReagentUnits() == null || dto.getReagentUnits() <= 0) errors.add("Reagent units must be positive");
-        if (dto.getProcessingTimeSeconds() == null || dto.getProcessingTimeSeconds() <= 0) errors.add("Processing time must be positive");
+        if (dto.getProcessingTimeSeconds() == null || dto.getProcessingTimeSeconds() <= 0)
+            errors.add("Processing time must be positive");
 
         if (!errors.isEmpty()) {
             throw new LabFlowException(String.join("; ", errors));
